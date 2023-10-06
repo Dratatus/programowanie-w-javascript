@@ -13,22 +13,23 @@
     </div>
     <script src="main.js" type="text/javascript"></script>
     <script type="text/javascript">
-        
         const calculateBtn = document.querySelector('#calculate')
+
         calculate.addEventListener('click', () => {
-        const number1 = document.querySelector('#userInput')
+            const number1 = document.querySelector('#userInput')
+            const number2 = document.querySelector('#userinput2')
 
-           console.log(number1.value)
+            const parsedInput = parseInt(number1)
+            const parsedInput2 = parseInt(number1)
 
-           const parsedInput = parseInt(number1)
-            const  min = Math.min(parsedInput)
-            const max = Math.max(parsedInput)
-             
+            const  min = Math.min(parsedInput, parsedInput2)
+            const max = Math.max(parsedInput, parsedInput2)
+
+            const sum = min + max
         })
 
         const wyniki = document.querySelector('#wyniki')
-        // wyniki.textContent = 'Max ' + min
-
+        
         </script>
 </body>
 </html>
