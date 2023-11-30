@@ -27,14 +27,15 @@ console.log(typeof (gameBoard.offsetWidth));
 
 window.addEventListener("deviceorientation", moveBall)
 
-function StartGame() {
+function start() {
+    PutHole();
     console.log(posX, posY, ballX, ballY);
     instruction.style.visibility = "hidden";
     ball.style.visibility = "visible";
 
 
     setInterval(() => {
-        //method
+        counter();
     }, 1000
     )
 }
@@ -50,7 +51,7 @@ function counter() {
     }
 
     if (m === 1) {
-        //method 
+        collisionDone();
         m = 0;
     }
     displayTime()
@@ -66,21 +67,6 @@ function displayTime() {
     } else displayM = m
     time = displayM + ";" + displayS;
     timer.innerHTML = time;
-}
-
-function moveBall(e) {
-    let x = e.beta;
-    let y = e.gamma;
-
-    if (x > 90) x = 90;
-    if (x < -90) x = -90;
-
-    x += 90;
-    y += 90;
-
-    ball.style.top = `${(maxY * y) / 180}px`;
-    ball.style.top = `${(maxX * x) / 180}px`;
-    checkCollision(ball, hole)
 }
 
 function PutHole() {
@@ -99,3 +85,56 @@ function PutHole() {
 
     container.appendChild(hole);
 }
+
+function checkCollision(ball, hole){
+    const ballX = parseInt(ball.style.left)
+    const ballY = parseInt(ball.style.top)
+  
+    const holeX = parseInt(hole.style.left)
+    const holeY = parseInt(hole.style.top)
+  
+    if (
+      ballY < holeY + 20 &&
+      ballY > holeY - 20 &&
+      ballX < holeX + 20 &&
+      ballX > holeX - 20
+    ){
+      score++
+      score1.textContent=`${score}`
+  
+      hole.remove()
+      this.PutHole()
+    }
+  }
+
+function moveBall(e) {
+    let x = e.beta;
+    let y = e.gamma;
+
+    if (x > 90) x = 90;
+    if (x < -90) x = -90;
+
+    x += 90;
+    y += 90;
+
+    ball.style.left = `${(maxY * y) / 180}px`;
+    ball.style.top = `${(maxX * x) / 180}px`;
+    checkCollision(ball, hole)
+}
+
+
+
+
+
+  function collisionDone() {
+    let info = `End game! Your score is: ${score}`;
+    if(score >= highScore){
+      highScore = score 
+      highScore1.textContent = highScore;
+    }
+    score = 0;
+    score1.textContent = score;
+    
+    alert(info);
+}
+  
