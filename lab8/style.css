@@ -6,9 +6,11 @@ body {
     margin: 0;
     padding: 0;
 }
+
+
 .main-container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 0 auto 0 auto;
     padding: 20px;
     text-align: center;
 }
@@ -51,14 +53,12 @@ body {
 }
 
 .weather-container {
-    width: 80%;
     background: linear-gradient(145deg, #f0f0f0, #cacaca);
     color: #333; 
     border-radius: 20px; 
     box-shadow: 5px 5px 15px rgba(0,0,0,0.1); 
     padding: 20px;
-    margin: 10px;
-    flex: 0 0 250px; 
+    margin: 2rem 85rem 1rem 85rem;
     text-align: center;
     transition: transform 0.2s ease-in-out; 
 }
