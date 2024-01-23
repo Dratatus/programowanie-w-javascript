@@ -1,78 +1,105 @@
-const mainSound = document.querySelector("#mainSound1");
-const domChannel1 = document.querySelector("#channel1");
+const SoundMap = {
+  a: document.getElementById('clap'),
+  s: document.getElementById('hithat'),
+  d: document.getElementById('kick'),
+  f: document.getElementById('openhat'),
+  g: document.getElementById('boom'),
+  h: document.getElementById('ride'),
+  j: document.getElementById('snare'),
+  k: document.getElementById('tom'),
+  l: document.getElementById('tink')
+}
 
-const globalArray = [];
+const recordingData = [
+  [], 
+  [], 
+  [], 
+  [] 
+]
 
+let activeRecordingChannel
+let startTimes = [0, 0, 0, 0]
 
-mainSound.addEventListener("loadedmetadata", function () {
-  domChannel1.addEventListener("keypress", (e) => {});
-  document.addEventListener("keypress", logKey);
-});
+document.addEventListener('keydown', handleKeyPress)
+document.addEventListener('keyup', handleKeyRelease)
 
-class Sound {
-  constructor(source, startDate, maxDuration) {
-    this.source = source;
-    this.startDate = startDate;
-    this.maxDuration = maxDuration;
-    this.actualDuration = null;
+function handleKeyPress(e) {
+  playAndRecordSound(e.key);
+}
+
+function handleKeyRelease(e) {
+  const soundElement = SoundMap[e.key];
+  if (soundElement) {
+    soundElement.parentElement.classList.remove('pressed')
   }
 }
 
-const playSound = (source) => {
-  console.log(mainSound.src);
-  mainSound.currentTime = 0;
-  globalArray.push(new Sound(mainSound.src, Date.now(), mainSound.duration));
-  mainSound.play();
-  if (globalArray.length > 1) {
-    globalArray.at(-2).actualDuration =
-      (globalArray.at(-1).startDate - globalArray.at(-2).startDate) / 1000 >
-      globalArray.at(-2).maxDuration
-        ? globalArray.at(-2).maxDuration
-        : (globalArray.at(-1).startDate - globalArray.at(-2).startDate) / 1000;
-    console.log(...globalArray);
-  }
-};
+function playAndRecordSound(key) {
+  const soundElement = SoundMap[key];
+  if (soundElement) {
+    soundElement.currentTime = 0;
+    soundElement.play();
+    soundElement.parentElement.classList.add('pressed');
 
-function logKey(e) {
-  switch (e.key) {
-    case "q":
-      playSound("./sounds/boom.wav");
-      break;
-    case "w":
-      playSound("./sounds/clap.wav");
-      break;
-    case "e":
-      playSound("./sounds/hihat.wav");
-      break;
-    case "r":
-      mainSound.src = "./sounds/kick.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
-    case "t":
-      mainSound.src = "./sounds/openhat.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
-    case "y":
-      mainSound.src = "./sounds/ride.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
-    case "u":
-      mainSound.src = "./sounds/snare.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
-    case "i":
-      mainSound.src = "./sounds/tink.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
-    case "o":
-      mainSound.src = "./sounds/tom.wav";
-      mainSound.currentTime = 0;
-      mainSound.play();
-      break;
+    if (activeRecordingChannel !== undefined) {
+      const soundTime = Date.now() - startTimes[activeRecordingChannel - 1];
+      recordingData[activeRecordingChannel - 1].push({ key: key, time: soundTime });
+    }
+  }
+}
+
+function startRecording(channel) {
+  if (recordingData[channel - 1].length > 0) {
+    recordingData[channel - 1] = [];
+  }
+  toggleUIForRecording(channel, true);
+  setRecordingChannel(channel);
+
+  setTimeout(() => {
+    endRecording(channel);
+  }, 5000);
+}
+
+function setRecordingChannel(channelNumber) {
+  if (channelNumber >= 1 && channelNumber <= 4) {
+    activeRecordingChannel = channelNumber;
+    startTimes[channelNumber - 1] = Date.now();
+  } else {
+    console.error('Invalid channel number');
+  }
+}
+
+function endRecording(channel) {
+  activeRecordingChannel = undefined;
+  toggleUIForRecording(channel, false);
+}
+
+function toggleUIForRecording(channel, isRecording) {
+  const playButtonId = `channel${channel}Play`;
+  document.getElementById(playButtonId).classList.toggle('hidden', isRecording);
+
+  const recButtonId = `channel${channel}Rec`;
+  const recIcon = document.getElementById(recButtonId).querySelector('.icon');
+  recIcon.classList.toggle('blink', isRecording);
+}
+
+function triggerChannelPlayback(channelNumber) {
+  recordingData[channelNumber - 1].forEach(soundInfo => {
+    setTimeout(() => {
+      playSound(SoundMap[soundInfo.key]);
+    }, soundInfo.time);
+  });
+}
+
+function playSound(audioElement) {
+  audioElement.currentTime = 0;
+  audioElement.play();
+}
+
+function playAllChannelsTogether() {
+  for (let i = 1; i <= 4; i++) {
+    if (recordingData[i - 1].length > 0) {
+      triggerChannelPlayback(i);
+    }
   }
 }

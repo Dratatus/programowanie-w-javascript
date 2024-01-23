@@ -1,13 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <audio src="./sounds/clap.wav" controls id="s1"></audio>
-    <audio src="./sounds/hihat.wav" controls id="s2"></audio>
-    <script src="drumkit.js"></script>
-</body> 
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>JS Drum Kit</title>
+        <script src="https://kit.fontawesome.com/8c63231481.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body>
+        <section class="drum-container">
+            <div class="drum-pad">
+                <span class="key-label">A</span>
+                <span class="sound">clap</span>
+                <audio src="./sounds/clap.wav" id="clap"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">S</span>
+                <span class="sound">hithat</span>
+                <audio src="./sounds/hihat.wav" id="hithat"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">D</span>
+                <span class="sound">kick</span>
+                <audio src="./sounds/kick.wav" id="kick"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">F</span>
+                <span class="sound">openhat</span>
+                <audio src="./sounds/openhat.wav" id="openhat"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">G</span>
+                <span class="sound">boom</span>
+                <audio src="./sounds/boom.wav" id="boom"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">H</span>
+                <span class="sound">ride</span>
+                <audio src="./sounds/ride.wav" id="ride"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">J</span>
+                <span class="sound">snare</span>
+                <audio src="./sounds/snare.wav" id="snare"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">K</span>
+                <span class="sound">tom</span>
+                <audio src="./sounds/tom.wav" id="tom"></audio>
+            </div>
+            <div class="drum-pad">
+                <span class="key-label">L</span>
+                <span class="sound">tink</span>
+                <audio src="./sounds/tink.wav" id="tink"></audio>
+            </div>
+        </section>
+
+        <section class="audio-channels">
+            <div class="audio-channel">
+                CHANNEL 1
+                <p class="channel-controls">
+                    <button id="channel1Rec" onclick="startRecording(1)">
+                        <i class="fa-solid fa-circle icon rec-icon"></i>
+                    </button>
+                    <button id="channel1Play" class="hidden"
+                        onclick="triggerChannelPlayback(1)">
+                        <i class="fa-solid fa-circle-play icon play-icon"></i>
+                    </button>
+                </p>
+            </div>
+            <div class="audio-channel">
+                CHANNEL 2
+                <p class="channel-controls">
+                    <button id="channel2Rec" onclick="startRecording(2)">
+                        <i class="icon rec-icon fa-solid fa-circle"></i>
+                    </button>
+                    <button id="channel2Play" class="hidden"
+                        onclick="triggerChannelPlayback(2)">
+                        <i class="fa-solid fa-circle-play icon play-icon"></i>
+                    </button>
+                </p>
+            </div>
+            <div class="audio-channel">
+                CHANNEL 3
+                <p class="channel-controls">
+                    <button id="channel3Rec" onclick="startRecording(3)">
+                        <i class="icon rec-icon fa-solid fa-circle"></i>
+                    </button>
+                    <button id="channel3Play" class="hidden"
+                        onclick="triggerChannelPlayback(3)">
+                        <i class="fa-solid fa-circle-play icon play-icon"></i>
+                    </button>
+                </p>
+            </div>
+            <div class="audio-channel">
+                CHANNEL 4
+                <p class="channel-controls">
+                    <button id="channel4Rec" onclick="startRecording(4)">
+                        <i class="icon rec-icon fa-solid fa-circle"></i>
+                    </button>
+                    <button id="channel4Play" class="hidden"
+                        onclick="triggerChannelPlayback(4)">
+                        <i class="fa-solid fa-circle-play icon play-icon"></i>
+                    </button>
+                </p>
+            </div>
+        </section>
+        <button id="playAllBtn" onclick="playAllChannelsTogether()">Play all channels together</button>
+        <script src="drumkit.js"></script>
+    </body>
 </html>
